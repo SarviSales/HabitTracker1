@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>باغچهٔ عادت‌های من</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F3ECDD;
+    --card:#FBF7EE;
+    --ink:#2B2620;
+    --muted:#6B6155;
+    --line:#E4D9C4;
+  }
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0; padding:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Vazirmatn', Tahoma, sans-serif;
+  }
+  body{ padding:28px 16px 60px; }
+  .page{ max-width:900px; margin:0 auto; }
+
+  .hero{ text-align:center; margin-bottom:22px; }
+  .eyebrow{
+    margin:0 0 6px; color:var(--muted);
+    font-size:.85rem; font-weight:500; letter-spacing:.02em;
+  }
+  .hero h1{
+    margin:0 0 8px; font-size:clamp(1.5rem,4vw,2.2rem);
+    font-weight:900;
+  }
+  .greeting{ margin:0; color:var(--muted); font-size:.95rem; }
+
+  .glance-row{
+    display:grid; grid-template-columns:1fr 1fr; gap:14px;
+    margin-bottom:22px;
+  }
+  .glance-card{
+    background:var(--card); border:1px solid var(--line);
+    border-radius:14px; padding:14px 16px; text-align:center;
+  }
+  .glance-label{ display:block; font-size:.8rem; color:var(--muted); margin-bottom:8px; }
+  .mosaic{ display:flex; justify-content:center; flex-wrap:wrap; gap:5px; margin-bottom:8px; }
+  .mosaic .sq{
+    width:14px; height:14px; border-radius:3px;
+    border:1.5px solid var(--sq-color, var(--line));
+    background:transparent;
+    transition:background .15s ease;
+  }
+  .mosaic .sq.done{ background:var(--sq-color, var(--ink)); }
+  .glance-frac{ font-weight:700; font-size:.95rem; }
+
+  .week-nav{
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--card); border:1px solid var(--line); border-radius:999px;
+    padding:8px 10px; margin-bottom:22px;
+  }
+  .week-nav button{
+    border:none; background:transparent; color:var(--ink);
+    font-family:inherit; font-size:.85rem; font-weight:600;
+    padding:6px 12px; border-radius:999px; cursor:pointer;
+  }
+  .week-nav button:hover{ background:var(--bg); }
+  .week-nav span{ font-size:.9rem; color:var(--muted); font-weight:500; }
+
+  .domain-card{
+    background:var(--card); border:1px solid var(--line);
+    border-radius:16px; padding:18px; margin-bottom:16px;
+    border-inline-start:5px solid var(--domain-color);
+  }
+  .domain-head{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+  .domain-icon{ font-size:1.3rem; }
+  .domain-head h2{ margin:0; font-size:1.1rem; font-weight:700; }
+
+  .grid-scroll{ overflow-x:auto; margin-bottom:14px; }
+  table.habit-grid{ border-collapse:collapse; width:100%; min-width:480px; }
+  table.habit-grid th, table.habit-grid td{ padding:6px 4px; text-align:center; }
+  table.habit-grid th{
+    font-weight:500; font-size:.72rem; color:var(--muted);
+    line-height:1.3;
+  }
+  table.habit-grid th.today, table.habit-grid td.today{
+    background:rgba(0,0,0,0.04); border-radius:8px;
+  }
+  .habit-name-col{ width:1%; white-space:nowrap; }
+  td.habit-name{
+    text-align:start; font-size:.88rem; padding-inline-end:14px;
+    white-space:nowrap;
+  }
+
+  .day-check{
+    position:relative; width:26px; height:26px;
+    display:inline-flex; align-items:center; justify-content:center;
+  }
+  .day-check input{
+    position:absolute; inset:0; opacity:0; margin:0; cursor:pointer;
+  }
+  .tile{
+    width:17px; height:17px; border:2px solid var(--domain-color);
+    border-radius:4px; transform:rotate(45deg);
+    pointer-events:none; position:relative;
+    transition:background .15s ease, transform .1s ease;
+  }
+  .day-check input:checked + .tile{ background:var(--domain-color); }
+  .day-check input:checked + .tile::after{
+    content:'✓'; position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    transform:rotate(-45deg); color:#fff; font-size:11px; font-weight:700;
+  }
+  .day-check input:focus-visible + .tile{
+    outline:2px solid var(--ink); outline-offset:3px;
+  }
+  .day-check input:hover + .tile{ transform:rotate(45deg) scale(1.08); }
+
+  .weekly-list{ display:flex; flex-direction:column; gap:8px; border-top:1px dashed var(--line); padding-top:12px; }
+  .weekly-item{
+    display:flex; align-items:center; gap:10px; cursor:pointer; font-size:.9rem;
+  }
+  .weekly-tag{
+    font-size:.68rem; color:var(--muted); border:1px solid var(--line);
+    border-radius:999px; padding:1px 8px; white-space:nowrap;
+  }
+
+  .foot-actions{
+    display:flex; align-items:center; justify-content:center; gap:12px;
+    margin-top:10px; flex-wrap:wrap;
+  }
+  .foot-actions button{
+    font-family:inherit; font-size:.85rem; font-weight:600;
+    background:var(--card); border:1px solid var(--line); color:var(--ink);
+    border-radius:999px; padding:8px 16px; cursor:pointer;
+  }
+  .foot-actions button:hover{ background:var(--bg); }
+  #statusMsg{ font-size:.8rem; color:var(--muted); min-height:1.2em; }
+  .autosave-note{ text-align:center; font-size:.75rem; color:var(--muted); margin-top:6px; }
+
+  @media (max-width:520px){
+    td.habit-name{ font-size:.8rem; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="hero">
+    <p class="eyebrow">امروز</p>
+    <h1 id="todayDate">در حال بارگذاری…</h1>
+    <p class="greeting">۵ حوزهٔ زندگیت رو قدم‌به‌قدم آباد کن 🌱</p>
+  </header>
+
+  <section class="glance-row">
+    <div class="glance-card">
+      <span class="glance-label">عادت‌های روزانه — امروز</span>
+      <div class="mosaic" id="dailyMosaic"></div>
+      <span class="glance-frac" id="dailyFrac">— از —</span>
+    </div>
+    <div class="glance-card">
+      <span class="glance-label">عادت‌های این هفته</span>
+      <div class="mosaic" id="weeklyMosaic"></div>
+      <span class="glance-frac" id="weeklyFrac">— از —</span>
+    </div>
+  </section>
+
+  <nav class="week-nav">
+    <button id="prevWeek" aria-label="هفتهٔ قبل">‹ هفتهٔ قبل</button>
+    <span id="weekLabel">…</span>
+    <button id="nextWeek" aria-label="هفتهٔ بعد">هفتهٔ بعد ›</button>
+  </nav>
+
+  <main id="domainsContainer"></main>
+
+  <div class="foot-actions">
+    <button id="resetWeek">بازنشانی این هفته</button>
+    <span id="statusMsg" role="status" aria-live="polite"></span>
+  </div>
+  <p class="autosave-note">تغییرات به‌صورت خودکار روی همین مرورگر ذخیره می‌شن.</p>
+</div>
+
+<script>
+(function(){
+  const domains = [
+    { id:'health', name:'سلامتی و ورزش', icon:'🌿', color:'#0F8B8D',
+      daily:[
+        {id:'water', label:'نوشیدن حداقل ۸ لیوان آب'},
+        {id:'exercise', label:'۳۰ دقیقه فعالیت بدنی'},
+        {id:'sleep', label:'خواب قبل از ساعت ۱۱ شب'}
+      ],
+      weekly:[{id:'mealprep', label:'برنامه‌ریزی یک وعدهٔ غذایی سالم برای هفته'}]
+    },
+    { id:'focus', name:'تمرکز و کار / تحصیل', icon:'🎯', color:'#2C4A7C',
+      daily:[
+        {id:'mainTask', label:'انجام مهم‌ترین کار روز، قبل از ظهر'},
+        {id:'noPhoneMorning', label:'یک ساعت اول صبح، بدون چک‌کردن گوشی'}
+      ],
+      weekly:[{id:'weeklyReview', label:'مرور کارهای این هفته و برنامه‌ریزی هفتهٔ بعد'}]
+    },
+    { id:'learn', name:'یادگیری و مهارت', icon:'📚', color:'#AD7A1E',
+      daily:[{id:'study20', label:'۲۰ دقیقه مطالعه یا یادگیری چیز تازه'}],
+      weekly:[{id:'practiceSkill', label:'تمرین یک مهارت جدید (زبان، ساز، برنامه‌نویسی...)'}]
+    },
+    { id:'mind', name:'ذهن و آرامش', icon:'🕊️', color:'#5F7A4E',
+      daily:[
+        {id:'meditate', label:'۱۰ دقیقه مدیتیشن یا تنفس عمیق'},
+        {id:'journal', label:'نوشتن چند خط دربارهٔ حال امروز'}
+      ],
+      weekly:[{id:'digitalDetox', label:'یک ساعت کامل، دور از گوشی و شبکه‌های اجتماعی'}]
+    },
+    { id:'social', name:'روابط و اجتماعی', icon:'🤝', color:'#A8384A',
+      daily:[{id:'gratitude', label:'ابراز قدردانی یا محبت به یکی از نزدیکان'}],
+      weekly:[{id:'connect', label:'تماس یا دیدار با یک دوست یا عضو خانواده'}]
+    }
+  ];
+
+  const dailyFlat = domains.flatMap(d => d.daily.map(h => ({...h, domain:d})));
+  const weeklyFlat = domains.flatMap(d => d.weekly.map(h => ({...h, domain:d})));
+  const dayLetters = ['ش','ی','د','س','چ','پ','ج'];
+
+  const faDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+  const toFa = n => String(n).split('').map(c => /[0-9]/.test(c) ? faDigits[+c] : c).join('');
+  const pad = n => String(n).padStart(2,'0');
+  const toISO = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const fmtJalali = (d, opts) => {
+    try { return new Intl.DateTimeFormat('fa-IR-u-ca-persian', opts).format(d); }
+    catch(e){ return new Intl.DateTimeFormat('fa-IR', opts).format(d); }
+  };
+  function saturdayStart(date){
+    const d = new Date(date);
+    d.setHours(0,0,0,0);
+    const diff = (d.getDay()+1)%7; // days since Saturday
+    d.setDate(d.getDate()-diff);
+    return d;
+  }
+
+  let weekOffset = 0;
+  let weekDays = [];
+  let weekKey = '';
+  let dailyState = {};
+  let weeklyState = {};
+
+  function computeWeek(){
+    const base = saturdayStart(new Date());
+    base.setDate(base.getDate() + weekOffset*7);
+    weekDays = Array.from({length:7}, (_,i) => {
+      const d = new Date(base); d.setDate(base.getDate()+i); return d;
+    });
+    weekKey = toISO(weekDays[0]);
+  }
+
+  function defaultDaily(){
+    const o = {}; dailyFlat.forEach(h => o[h.id] = [false,false,false,false,false,false,false]); return o;
+  }
+  function defaultWeekly(){
+    const o = {}; weeklyFlat.forEach(h => o[h.id] = false); return o;
+  }
+
+  async function loadWeek(){
+    dailyState = defaultDaily();
+    weeklyState = defaultWeekly();
+    try {
+      const res = await window.storage.get('daily:'+weekKey);
+      if(res && res.value){
+        const parsed = JSON.parse(res.value);
+        Object.keys(parsed).forEach(k => { if(dailyState[k]) dailyState[k] = parsed[k]; });
+      }
+    } catch(e) { /* no saved data yet for this week */ }
+    try {
+      const res2 = await window.storage.get('weekly:'+weekKey);
+      if(res2 && res2.value){
+        const parsed2 = JSON.parse(res2.value);
+        Object.keys(parsed2).forEach(k => { if(k in weeklyState) weeklyState[k] = parsed2[k]; });
+      }
+    } catch(e) { /* no saved data yet for this week */ }
+  }
+
+  async function persistDaily(){
+    try { await window.storage.set('daily:'+weekKey, JSON.stringify(dailyState)); }
+    catch(e){ showStatus('ذخیره نشد، دوباره امتحان کن.'); }
+  }
+  async function persistWeekly(){
+    try { await window.storage.set('weekly:'+weekKey, JSON.stringify(weeklyState)); }
+    catch(e){ showStatus('ذخیره نشد، دوباره امتحان کن.'); }
+  }
+
+  let statusTimer;
+  function showStatus(msg){
+    const el = document.getElementById('statusMsg');
+    el.textContent = msg;
+    clearTimeout(statusTimer);
+    statusTimer = setTimeout(() => { el.textContent = ''; }, 2200);
+  }
+
+  function todayISOIndex(){
+    const t = toISO(new Date());
+    return weekDays.findIndex(d => toISO(d) === t);
+  }
+
+  function renderHeader(){
+    const today = new Date();
+    document.getElementById('todayDate').textContent =
+      `${fmtJalali(today,{weekday:'long'})}، ${fmtJalali(today,{day:'numeric',month:'long',year:'numeric'})}`;
+    document.getElementById('weekLabel').textContent =
+      `${fmtJalali(weekDays[0],{day:'numeric',month:'long'})} تا ${fmtJalali(weekDays[6],{day:'numeric',month:'long',year:'numeric'})}`;
+  }
+
+  function renderDomains(){
+    const todayIdx = todayISOIndex();
+    const container = document.getElementById('domainsContainer');
+    container.innerHTML = domains.map(dom => {
+      const dailyRows = dom.daily.map(h => {
+        const cells = weekDays.map((d,i) => {
+          const checked = dailyState[h.id][i] ? 'checked' : '';
+          const cls = i === todayIdx ? 'today' : '';
+          return `<td class="${cls}">
+            <label class="day-check">
+              <input type="checkbox" data-daily="${h.id}" data-day="${i}" ${checked}>
+              <span class="tile"></span>
+            </label>
+          </td>`;
+        }).join('');
+        return `<tr><td class="habit-name">${h.label}</td>${cells}</tr>`;
+      }).join('');
+
+      const dayHeaders = weekDays.map((d,i) => {
+        const cls = i === todayIdx ? 'today' : '';
+        return `<th class="${cls}">${dayLetters[i]}<br>${fmtJalali(d,{day:'numeric'})}</th>`;
+      }).join('');
+
+      const weeklyItems = dom.weekly.map(h => {
+        const checked = weeklyState[h.id] ? 'checked' : '';
+        return `<label class="weekly-item">
+          <span class="day-check">
+            <input type="checkbox" data-weekly="${h.id}" ${checked}>
+            <span class="tile"></span>
+          </span>
+          <span>${h.label}</span>
+          <span class="weekly-tag">این هفته</span>
+        </label>`;
+      }).join('');
+
+      return `<section class="domain-card" style="--domain-color:${dom.color}">
+        <div class="domain-head"><span class="domain-icon">${dom.icon}</span><h2>${dom.name}</h2></div>
+        <div class="grid-scroll">
+          <table class="habit-grid">
+            <thead><tr><th class="habit-name-col"></th>${dayHeaders}</tr></thead>
+            <tbody>${dailyRows}</tbody>
+          </table>
+        </div>
+        <div class="weekly-list">${weeklyItems}</div>
+      </section>`;
+    }).join('');
+  }
+
+  function renderMosaics(){
+    const todayIdx = todayISOIndex();
+    const dailyDone = dailyFlat.filter(h => todayIdx >= 0 && dailyState[h.id][todayIdx]).length;
+    const weeklyDone = weeklyFlat.filter(h => weeklyState[h.id]).length;
+
+    document.getElementById('dailyMosaic').innerHTML = dailyFlat.map(h => {
+      const done = todayIdx >= 0 && dailyState[h.id][todayIdx];
+      return `<span class="sq ${done?'done':''}" style="--sq-color:${h.domain.color}"></span>`;
+    }).join('');
+    document.getElementById('weeklyMosaic').innerHTML = weeklyFlat.map(h => {
+      const done = weeklyState[h.id];
+      return `<span class="sq ${done?'done':''}" style="--sq-color:${h.domain.color}"></span>`;
+    }).join('');
+
+    document.getElementById('dailyFrac').textContent = `${toFa(dailyDone)} از ${toFa(dailyFlat.length)}`;
+    document.getElementById('weeklyFrac').textContent = `${toFa(weeklyDone)} از ${toFa(weeklyFlat.length)}`;
+  }
+
+  function renderAll(){
+    renderHeader();
+    renderDomains();
+    renderMosaics();
+  }
+
+  document.getElementById('domainsContainer').addEventListener('change', async (e) => {
+    const t = e.target;
+    if(t.matches('input[data-daily]')){
+      const id = t.dataset.daily, idx = Number(t.dataset.day);
+      dailyState[id][idx] = t.checked;
+      renderMosaics();
+      await persistDaily();
+    } else if(t.matches('input[data-weekly]')){
+      const id = t.dataset.weekly;
+      weeklyState[id] = t.checked;
+      renderMosaics();
+      await persistWeekly();
+    }
+  });
+
+  document.getElementById('prevWeek').addEventListener('click', async () => {
+    weekOffset -= 1; computeWeek();
+    document.getElementById('weekLabel').textContent = 'در حال بارگذاری…';
+    await loadWeek(); renderAll();
+  });
+  document.getElementById('nextWeek').addEventListener('click', async () => {
+    weekOffset += 1; computeWeek();
+    document.getElementById('weekLabel').textContent = 'در حال بارگذاری…';
+    await loadWeek(); renderAll();
+  });
+
+  let resetArmed = false;
+  const resetBtn = document.getElementById('resetWeek');
+  resetBtn.addEventListener('click', async () => {
+    if(!resetArmed){
+      resetArmed = true;
+      resetBtn.textContent = 'مطمئنی؟ (دوباره لمس کن)';
+      setTimeout(() => { resetArmed = false; resetBtn.textContent = 'بازنشانی این هفته'; }, 3000);
+      return;
+    }
+    resetArmed = false;
+    resetBtn.textContent = 'بازنشانی این هفته';
+    dailyState = defaultDaily();
+    weeklyState = defaultWeekly();
+    renderAll();
+    await persistDaily();
+    await persistWeekly();
+    showStatus('این هفته بازنشانی شد.');
+  });
+
+  (async function init(){
+    computeWeek();
+    await loadWeek();
+    renderAll();
+  })();
+})();
+</script>
+</body>
+</html>
